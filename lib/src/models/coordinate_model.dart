@@ -9,6 +9,31 @@ enum SquareColor {
   black,
 }
 
+/// Square Color Extension
+extension SquareColorExtension on SquareColor {
+  /// Convert SquareColor to JSON (string or integer)
+  String toJson() {
+    switch (this) {
+      case SquareColor.white:
+        return 'white';
+      case SquareColor.black:
+        return 'black';
+    }
+  }
+
+  /// Create SquareColor from JSON (string)
+  static SquareColor fromJson(String json) {
+    switch (json) {
+      case 'white':
+        return SquareColor.white;
+      case 'black':
+        return SquareColor.black;
+      default:
+        throw Exception('Unknown SquareColor value: $json');
+    }
+  }
+}
+
 /// A model for coordinated of chess squares
 class CoordinateModel extends Equatable {
   /// Constructor
@@ -17,6 +42,17 @@ class CoordinateModel extends Equatable {
     required this.intValue,
     required this.stringValue,
   });
+
+  /// Create CoordinateModel from JSON
+  factory CoordinateModel.fromJson(Map<String, dynamic> json) {
+    return CoordinateModel(
+      intValue: int.parse(json['intValue'].toString()),
+      stringValue: json['stringValue'] as String,
+      color: SquareColorExtension.fromJson(
+        json['color'] as String,
+      ),
+    );
+  }
 
   /// Int value representing 1 to 8
   final int intValue;
@@ -38,6 +74,15 @@ class CoordinateModel extends Equatable {
       intValue: intValue ?? this.intValue,
       stringValue: stringValue ?? this.stringValue,
     );
+  }
+
+  /// Convert CoordinateModel to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'intValue': intValue,
+      'stringValue': stringValue,
+      'color': color.toJson(),
+    };
   }
 
   @override

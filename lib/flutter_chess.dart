@@ -1,4 +1,4 @@
 /// A wholesome chess game package
-library;
+library flutter_chess;
 
 export 'src/flutter_chess.dart';
