@@ -47,7 +47,9 @@ class ChessGameBloc extends Bloc<ChessGameEvents, ChessGameState> {
     final pref = await SharedPreferences.getInstance();
     final data = pref.get(event.savedGameKey);
     if (data != null) {
-      final stateModel = ChessGameState.fromJson(data as Map<String, dynamic>);
+      final stateModel = ChessGameState.fromJson(
+        jsonDecode(data.toString()) as Map<String, dynamic>,
+      );
       emit(
         state.copyWith(
           chessBoardModel: stateModel.chessBoardModel,
@@ -70,6 +72,7 @@ class ChessGameBloc extends Bloc<ChessGameEvents, ChessGameState> {
     final pref = await SharedPreferences.getInstance();
     // Create a utils that provides key
     // get a list of saved keys as well
+    //TODO: Replace key with correct value
     await pref.setString(
       'some_key',
       jsonEncode(event.state.toJson()),
@@ -79,7 +82,13 @@ class ChessGameBloc extends Bloc<ChessGameEvents, ChessGameState> {
   void _moveChessPiece(
     MoveChessPieceEvent event,
     Emitter<ChessGameState> emit,
-  ) {}
+  ) {
+    // Promotion of pawn will also be handled here by checking is last row ?
+    // Coordinate + color of piece
+    // if event.requestedCoordinate is occupied with another chess piece
+    // then check if that piece is players or opponents
+    // if its opponents then delete it from state
+  }
 
   void _undoEvent(
     UndoEvent event,

@@ -65,6 +65,40 @@ extension ChessPieceTypeX on ChessPieceType {
   }
 }
 
+/// Chess Piece Color [white] | [black]
+enum ChessPieceColor {
+  /// White Team
+  white,
+
+  /// Black Team
+  black,
+}
+
+/// Extension on Chess piece color
+extension ChessPieceColorX on ChessPieceColor {
+  /// To Json
+  String toJson() {
+    switch (this) {
+      case ChessPieceColor.white:
+        return 'white';
+      case ChessPieceColor.black:
+        return 'black';
+    }
+  }
+
+  /// From json
+  static ChessPieceColor fromJson(String value) {
+    switch (value) {
+      case 'white':
+        return ChessPieceColor.white;
+      case 'black':
+        return ChessPieceColor.black;
+      default:
+        throw Exception('Value for $value is not correct color');
+    }
+  }
+}
+
 /// ChessPieceModel -> Attributes
 class ChessPieceModel extends Equatable {
   /// Constructor
@@ -72,6 +106,7 @@ class ChessPieceModel extends Equatable {
     required this.coordinateOnBoard,
     required this.img,
     required this.type,
+    required this.color,
   });
 
   /// Create ChessPieceModel from JSON
@@ -82,6 +117,7 @@ class ChessPieceModel extends Equatable {
         json['coordinateOnBoard'] as Map<String, dynamic>,
       ),
       img: json['img'] as String,
+      color: ChessPieceColorX.fromJson(json['color'] as String),
     );
   }
 
@@ -94,11 +130,16 @@ class ChessPieceModel extends Equatable {
   /// Image of this chess piece
   final String img;
 
+  /// Color of the piece
+  final ChessPieceColor color;
+
   /// Convert ChessPieceModel to JSON
   Map<String, dynamic> toJson() {
     return {
       'type': type.toJson(),
       'coordinateOnBoard': coordinateOnBoard.toJson(),
+      'img': img,
+      'color': color.toJson(),
     };
   }
 

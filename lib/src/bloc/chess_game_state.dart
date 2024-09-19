@@ -24,8 +24,13 @@ extension PlayerTurnStatusX on PlayerTurnStatus {
 
 /// Player Color Status
 enum PlayerColorStatus {
+  /// Not Selected
   idle,
+
+  /// White Selected
   white,
+
+  /// Black Selected
   black,
 }
 
@@ -181,6 +186,11 @@ class ChessGameState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [chessBoardModel, turnStatus, prevState, gameStatus];
+  List<Object?> get props => [
+        chessBoardModel,
+        turnStatus,
+        prevState,
+        gameStatus,
+        playerColorStatus,
+      ];
 }
