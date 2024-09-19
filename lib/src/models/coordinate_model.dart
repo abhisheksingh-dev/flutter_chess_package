@@ -34,7 +34,7 @@ extension SquareColorExtension on SquareColor {
   }
 }
 
-/// A model for coordinated of chess squares
+/// A model for coordinates of 8x8 chess squares
 class CoordinateModel extends Equatable {
   /// Constructor
   const CoordinateModel({
@@ -60,7 +60,7 @@ class CoordinateModel extends Equatable {
   /// String value representing a to h
   final String stringValue;
 
-  ///0 is black and 1 is white;
+  ///0 is `white` and 1 is `black`
   final SquareColor color;
 
   /// Exposing a method to quickly modify the [CoordinateModel]

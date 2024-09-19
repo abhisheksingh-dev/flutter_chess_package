@@ -15,7 +15,7 @@ abstract class ChessPieceMoveSet {
 }
 
 /// Pawn piece Move Set
-class PawnChessMoveSet extends ChessPieceMoveSet {
+final class PawnChessMoveSet extends ChessPieceMoveSet {
   @override
   List<CoordinateModel> getChessPieceMoves({
     required ChessPieceModel chessPieceModel,
@@ -193,5 +193,74 @@ class PawnChessMoveSet extends ChessPieceMoveSet {
       );
     }
     return returnCoordinates;
+  }
+}
+
+/// Bishop piece Move Set
+final class BishopChessMoveSet extends ChessPieceMoveSet {
+  @override
+  List<CoordinateModel> getChessPieceMoves({
+    required ChessPieceModel chessPieceModel,
+    required ChessGameState state,
+  }) {
+    // Bishop moves diagonally until board ends or
+    // there is any piece obstructing its path
+    // Bug in getBishopDiagonalSteps function
+    return Utils.getBishopDiagonalSteps(
+      currentCoordinate: chessPieceModel.coordinateOnBoard,
+      chessBoardModelState: state,
+    );
+  }
+}
+
+/// Knight piece Move Set
+final class KnightChessMoveSet extends ChessPieceMoveSet {
+  @override
+  List<CoordinateModel> getChessPieceMoves({
+    required ChessPieceModel chessPieceModel,
+    required ChessGameState state,
+  }) {
+    // Knight generally move 2 steps in any 4 directions
+    // and then either takes left or right.
+    return Utils.getKnightSteps(
+      currentCoordinate: chessPieceModel.coordinateOnBoard,
+      chessBoardModelState: state,
+    );
+  }
+}
+
+/// Rook piece Move Set
+final class RookChessMoveSet extends ChessPieceMoveSet {
+  @override
+  List<CoordinateModel> getChessPieceMoves({
+    required ChessPieceModel chessPieceModel,
+    required ChessGameState state,
+  }) {
+    // TODO: implement getChessPieceMoves
+    throw UnimplementedError();
+  }
+}
+
+/// Queen piece Move Set
+final class QueenChessMoveSet extends ChessPieceMoveSet {
+  @override
+  List<CoordinateModel> getChessPieceMoves({
+    required ChessPieceModel chessPieceModel,
+    required ChessGameState state,
+  }) {
+    // TODO: implement getChessPieceMoves
+    throw UnimplementedError();
+  }
+}
+
+/// King chess Move Set
+final class KingChessMoveSet extends ChessPieceMoveSet {
+  @override
+  List<CoordinateModel> getChessPieceMoves({
+    required ChessPieceModel chessPieceModel,
+    required ChessGameState state,
+  }) {
+    // TODO: implement getChessPieceMoves
+    throw UnimplementedError();
   }
 }
