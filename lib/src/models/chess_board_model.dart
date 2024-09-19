@@ -42,9 +42,10 @@ class ChessBoardModel extends Equatable {
     List<ChessPieceModel>? whiteChessPieces,
   ) {
     return ChessBoardModel(
-        blackChessPieces: blackChessPieces ?? this.blackChessPieces,
-        coordinates: coordinates ?? this.coordinates,
-        whiteChessPieces: whiteChessPieces ?? this.whiteChessPieces);
+      blackChessPieces: blackChessPieces ?? this.blackChessPieces,
+      coordinates: coordinates ?? this.coordinates,
+      whiteChessPieces: whiteChessPieces ?? this.whiteChessPieces,
+    );
   }
 
   /// To json
