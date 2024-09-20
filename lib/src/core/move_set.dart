@@ -236,8 +236,9 @@ final class RookChessMoveSet extends ChessPieceMoveSet {
     required ChessPieceModel chessPieceModel,
     required ChessGameState state,
   }) {
-    // TODO: implement getChessPieceMoves
-    throw UnimplementedError();
+    return Utils.getRookSteps(
+      currentCoordinate: chessPieceModel.coordinateOnBoard,
+    );
   }
 }
 

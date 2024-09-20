@@ -190,6 +190,8 @@ class Utils {
     return returnList;
   }
 
+  // TODO: Bug in this code there are some out of bond exceptions
+  // forexample input - (3,b,white) and get (2,a,white)
   ///Get Knight 2.5 Leaping Steps
   static List<CoordinateModel> getKnightSteps({
     required CoordinateModel currentCoordinate,
@@ -208,54 +210,108 @@ class Utils {
     // Create a function upward movement of piece with int steps
     // which returns CoordinateModel and null if this is not possible
 
-    // take 2 up and 1 right
-    final up2Coordinate = _takeUpSteps(
-      currentCoordinates: currentCoordinate,
-      steps: 2,
-    );
-    // If not null then continue to take right
+    // Case 1 - take 2 up and 1 right
+    final up2Coordinate = TakeUp(currentCoordinate).move(steps: 2);
     if (up2Coordinate != null) {
-      // Right step coordinate
-      final right1Coordinate = _takeRightSteps(
-        currentCoordinates: up2Coordinate,
-        steps: 1,
-      );
-      // If present then add
-      if (right1Coordinate != null) {
-        returnList.add(right1Coordinate);
-      }
-      // Left step coordinate
-      final left1StepCoordinate = TakeLeft(currentCoordinate).move(
-        steps: 1,
-      );
-      // If present then add
-      if (left1StepCoordinate != null) {
-        returnList.add(left1StepCoordinate);
-      }
-      //
+      final right1Coordinate = TakeRight(up2Coordinate).move(steps: 1);
+      if (right1Coordinate != null) returnList.add(right1Coordinate);
     }
 
-    // take 1 up and 2 right
-    throw UnimplementedError();
+    // Case 1.5 - take 2 up and 1 left
+    if (up2Coordinate != null) {
+      final left1Coordinate = TakeLeft(up2Coordinate).move(steps: 1);
+      if (left1Coordinate != null) returnList.add(left1Coordinate);
+    }
+
+    // Case 2 - take 1 up and 2 right
+    final up1Coordinate = TakeUp(currentCoordinate).move(steps: 1);
+    if (up1Coordinate != null) {
+      final right2Coordinate = TakeRight(up1Coordinate).move(steps: 2);
+      if (right2Coordinate != null) returnList.add(right2Coordinate);
+    }
+
+    // Case 2.5 - take 1 up and 2 left
+    if (up1Coordinate != null) {
+      final left2Coordinate = TakeLeft(up1Coordinate).move(steps: 2);
+      if (left2Coordinate != null) returnList.add(left2Coordinate);
+    }
+
+    // Case 3 - take 1 right and 2 up
+    final right1Coordinate = TakeRight(currentCoordinate).move(steps: 1);
+    if (right1Coordinate != null) {
+      final up2Coordinate = TakeUp(right1Coordinate).move(steps: 2);
+      if (up2Coordinate != null) returnList.add(up2Coordinate);
+    }
+
+    // Case 3.5 - take 1 right and 2 down
+    if (right1Coordinate != null) {
+      final down2Coordinate = TakeDown(right1Coordinate).move(steps: 2);
+      if (down2Coordinate != null) returnList.add(down2Coordinate);
+    }
+
+    // Case 4 - take 1 left and 2 up
+    final left1Coordinate = TakeLeft(currentCoordinate).move(steps: 1);
+    if (left1Coordinate != null) {
+      final up2Coordinate = TakeUp(left1Coordinate).move(steps: 2);
+      if (up2Coordinate != null) returnList.add(up2Coordinate);
+    }
+
+    // Case 4.5 - take 1 left and 2 down
+    if (left1Coordinate != null) {
+      final down2Coordinates = TakeDown(left1Coordinate).move(steps: 2);
+      if (down2Coordinates != null) returnList.add(down2Coordinates);
+    }
+
+    // Case 5 - take 1 down and 2 right
+    final down1Coordinate = TakeDown(currentCoordinate).move(steps: 1);
+    if (down1Coordinate != null) {
+      final right2Coordinate = TakeRight(down1Coordinate).move(steps: 2);
+      if (right2Coordinate != null) returnList.add(right2Coordinate);
+    }
+
+    // Case 5.5 - take 1 down and 2 left
+    if (down1Coordinate != null) {
+      final left2Coordinate = TakeLeft(down1Coordinate).move(steps: 2);
+      if (left2Coordinate != null) returnList.add(left2Coordinate);
+    }
+
+    return returnList;
   }
 
-  static CoordinateModel? _takeUpSteps({
-    required CoordinateModel currentCoordinates,
-    required int steps,
-  }) {}
+  /// Get Rook Steps
+  static List<CoordinateModel> getRookSteps({
+    required CoordinateModel currentCoordinate,
+  }) {
+    final returnList = <CoordinateModel>[];
 
-  static CoordinateModel? _takeRightSteps({
-    required CoordinateModel currentCoordinates,
-    required int steps,
-  }) {}
+    // Case 1: Move up (increasing row)
+    var bufferCoordinate = TakeUp(currentCoordinate).move(steps: 1);
+    while (bufferCoordinate != null) {
+      returnList.add(bufferCoordinate);
+      bufferCoordinate = TakeUp(bufferCoordinate).move(steps: 1);
+    }
 
-  static CoordinateModel? _takeLeftSteps({
-    required CoordinateModel currentCoordinates,
-    required int steps,
-  }) {}
+    // Case 2: Move down (decreasing row)
+    bufferCoordinate = TakeDown(currentCoordinate).move(steps: 1);
+    while (bufferCoordinate != null) {
+      returnList.add(bufferCoordinate);
+      bufferCoordinate = TakeDown(bufferCoordinate).move(steps: 1);
+    }
 
-  static CoordinateModel? _takeDownSteps({
-    required CoordinateModel currentCoordinates,
-    required int steps,
-  }) {}
+    // Case 3: Move left (decreasing column)
+    bufferCoordinate = TakeLeft(currentCoordinate).move(steps: 1);
+    while (bufferCoordinate != null) {
+      returnList.add(bufferCoordinate);
+      bufferCoordinate = TakeLeft(bufferCoordinate).move(steps: 1);
+    }
+
+    // Case 4: Move right (increasing column)
+    bufferCoordinate = TakeRight(currentCoordinate).move(steps: 1);
+    while (bufferCoordinate != null) {
+      returnList.add(bufferCoordinate);
+      bufferCoordinate = TakeRight(bufferCoordinate).move(steps: 1);
+    }
+
+    return returnList;
+  }
 }
