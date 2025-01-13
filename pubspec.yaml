@@ -12,7 +12,7 @@ dev_dependencies:
   very_good_analysis: ">=6.0.0 <8.0.0"
 
 dependencies:
-  bloc: ^8.1.4
+  bloc: ">=8.1.4 <10.0.0"
   equatable: ^2.0.5
   shared_preferences: ^2.3.2
 
